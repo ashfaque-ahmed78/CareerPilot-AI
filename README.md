@@ -1,542 +1,557 @@
-# CareerPilot AI — Resume Intelligence & Career Skill-Gap Dashboard
+# 🤖 CareerPilot AI — Resume Intelligence & Career Skill-Gap Navigator
 
-> **CareerPilot AI** is a local-first, Streamlit-based prototype that helps users compare PDF resumes with a target job description, understand detected skill matches and gaps, review explainable screening scores, and plan next learning steps.
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,50:4338CA,100:06B6D4&height=220&section=header&text=CAREERPILOT%20AI&fontSize=38&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=Resume%20Intelligence%20%7C%20Skill%20Gap%20Analysis%20%7C%20AI%20Career%20Coaching&descAlignY=60&descSize=15" width="100%" alt="CareerPilot AI banner"/>
+</p>
 
-It is designed as a hackathon project and decision-support tool. It does **not** predict hiring success, replace human review, or guarantee that a candidate has or lacks a skill.
+<p align="center">
+  <b>An AI-assisted career dashboard that compares resumes with job descriptions, explains detected skill matches and gaps, and helps users plan their next steps.</b>
+</p>
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit"/>
+  <img src="https://img.shields.io/badge/Groq-111827?style=for-the-badge" alt="Optional Groq AI"/>
+  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
+  <img src="https://img.shields.io/badge/Resume%20Analytics-4338CA?style=for-the-badge" alt="Resume analytics"/>
+</p>
 
-## Table of Contents
-
-1. [Project at a Glance](#-project-at-a-glance)
-2. [Problem Statement](#-problem-statement)
-3. [Project Goals](#-project-goals)
-4. [Features](#-features)
-5. [Application Workflow](#-application-workflow)
-6. [Scoring Methodology](#-scoring-methodology)
-7. [AI Automation and Intelligence](#-ai-automation-and-intelligence)
-8. [Dashboard and User Interface](#-dashboard-and-user-interface)
-9. [Project Structure](#-project-structure)
-10. [Technology Stack](#-technology-stack)
-11. [Installation on Windows](#-installation-on-windows)
-12. [Environment Configuration](#-environment-configuration)
-13. [Running the Application](#-running-the-application)
-14. [How to Use CareerPilot AI](#-how-to-use-careerpilot-ai)
-15. [Reports, Exports, and Local History](#-reports-exports-and-local-history)
-16. [Privacy and Responsible Use](#-privacy-and-responsible-use)
-17. [Current Limitations](#-current-limitations)
-18. [Troubleshooting](#-troubleshooting)
-19. [Future Improvements](#-future-improvements)
-20. [Contributing](#-contributing)
-21. [License](#-license)
+<p align="center">
+  <a href="https://github.com/ashfaque-ahmed78">Developer Profile</a> •
+  <a href="https://github.com/ashfaque-ahmed78/CareerPilot-AI">GitHub Repository</a>
+</p>
 
 ---
 
-## 🚀 Project at a Glance
+## 📌 Overview
 
-| Item | Description |
-|---|---|
-| Project name | CareerPilot AI |
-| Application type | Interactive web dashboard |
-| Interface framework | Streamlit |
-| Main input | Text-based PDF resume(s) and a job description |
-| Main output | Screening score, text similarity, detected skills, skill gaps, and candidate comparisons |
-| AI integration | Optional Groq API assessment |
-| Local persistence | SQLite screening history |
-| Export formats | CSV, JSON, and text downloads (depending on report/tool) |
-| Intended use | Resume review assistance, skill-gap awareness, interview practice, and learning guidance |
-| Project status | Hackathon prototype |
+**CareerPilot AI** is a Streamlit-based resume intelligence dashboard designed to help users compare one or more PDF resumes against a target job description. It combines PDF text extraction, built-in skill detection, TF-IDF text similarity, an explainable screening score, and optional Groq-powered AI coaching.
 
-## 🎯 Problem Statement
+Instead of showing only a single number, CareerPilot AI helps users inspect recognised skill matches, detected gaps, and possible next steps. It also provides batch comparisons, interview practice, a learning roadmap, downloadable reports, and local screening history where supported by the current application.
 
-Applicants and reviewers can find it difficult to connect a resume to the requirements of a specific role. Manually comparing multiple resumes can take time, while a raw similarity score does not explain which skills were detected or what could be improved.
+> **Responsible-use note:** CareerPilot AI is a hackathon prototype and decision-support tool. Its scores are not hiring probabilities, proof of a candidate's abilities, or a substitute for human review.
 
-CareerPilot AI brings several review steps into one dashboard:
+---
 
-- compares resume text with a supplied job description;
-- identifies skills recognised by its built-in vocabulary;
-- calculates a transparent, heuristic screening score;
-- highlights detected matches and gaps;
-- optionally asks a Groq-powered AI service to provide additional feedback;
-- offers interview practice and learning-roadmap tools;
-- keeps a local history of screening reports for later review.
-
-The results are intended to support human judgement, not make automatic hiring decisions.
-
-## 💡 Project Goals
+## 🎯 Project Goals
 
 - Make resume-to-job-description comparison easier to understand.
-- Present screening results in a clear dashboard instead of only raw text.
-- Explain the score through visible components.
-- Help users inspect detected skill matches and gaps.
-- Support batch comparisons when multiple resumes are supplied.
-- Keep screening history locally for convenient follow-up.
-- Provide optional AI-assisted coaching without making AI a requirement for basic matching.
+- Show the components behind a screening score.
+- Identify recognised skill matches and potential skill gaps.
+- Compare multiple resumes against one target role.
+- Offer optional AI-assisted resume feedback and preparation ideas.
+- Help users turn detected gaps into practical learning steps.
+- Keep screening history locally for convenient review.
+- Provide a foundation for future career-path and skill-development features.
 
-## ✨ Features
+---
 
-### 1. Dashboard overview
+## ✨ Key Features
 
-The dashboard brings key screening information into one place, including metrics such as total resumes screened, average screening score, average skill coverage, job profiles, recent scores, and latest reports—where available in the current app state.
+### 📊 Interactive Dashboard
 
-### 2. Single-resume and batch screening
+- View headline screening metrics and recent reports, where available.
+- Review screening scores and skill-coverage information.
+- Use charts, tables, and dashboard components provided by the current app.
+- Navigate between screening and career-preparation tools.
 
-Upload one or more text-based PDF resumes and provide a target job description. Batch screening allows multiple candidates to be compared against the same role and displayed in a ranked comparison table.
+### 📄 Resume Screening
 
-### 3. Explainable screening score
+- Upload text-based PDF resumes.
+- Compare resume content with a supplied job description.
+- Calculate a screening score from detected skill coverage and text similarity.
+- Review the analysis rather than relying on an unexplained score.
 
-The score combines detected skill coverage and text similarity using a fixed, documented weighting. See [Scoring Methodology](#-scoring-methodology).
+### 👥 Batch Candidate Comparison
 
-### 4. Skill-match and skill-gap analysis
+- Screen multiple PDF resumes against one target role.
+- Compare candidates in a ranked results table.
+- Export comparison results to CSV when the relevant control is available.
 
-CareerPilot AI displays skills it recognises in the job description and resume, including matching skills and detected gaps. These results depend on the application's built-in skill vocabulary and the text extracted from the PDF.
+### 🧩 Skill-Gap Analysis
 
-### 5. Optional AI Resume Coach
+- Detect skills recognised in the job description.
+- Identify recognised skills also found in the resume.
+- Highlight job-description skills that were not detected in the resume.
+- Use the detected gaps as prompts for further review and learning.
 
-When a Groq API key is configured, the app can request additional feedback such as:
+*A skill not detected by the program is not proof that the candidate lacks it. The vocabulary and extracted PDF text can be incomplete.*
 
-- strengths supported by the provided resume text;
+### 🧠 Optional AI Resume Coach
+
+When a valid Groq API key is configured, the app can request AI-generated feedback such as:
+
+- resume strengths;
 - possible areas for improvement;
 - relevant keywords to consider;
 - project ideas for skill development;
 - a suggested professional summary.
 
-AI output may be incomplete or incorrect. Always check suggestions against the original resume and job description.
+AI-generated advice can be inaccurate or incomplete. Verify every suggestion against the original resume and job description.
 
-### 6. Interview preparation
+### 🎤 Interview Preparation
 
-The Interview Prep feature provides role- and skill-related practice questions and answer-drafting fields, helping users prepare for technical or role-specific discussions.
+- Generate role- and skill-related practice questions.
+- Draft answers in the interface where supported.
+- Use the questions as practice prompts, not as guaranteed interview questions.
 
-### 7. Learning roadmap
+### 🗺️ Learning Roadmap
 
-The Learning Roadmap feature turns detected skill gaps into suggested learning steps. Treat these as guidance rather than a verified course syllabus or guaranteed path to employment.
+- Turn detected skill gaps into suggested learning steps.
+- Organise preparation around areas that may need attention.
+- Treat the roadmap as guidance, not a verified or guaranteed career path.
 
-### 8. Past reports and local history
+### 🗃️ Past Reports and Local History
 
-Screening results can be stored in a local SQLite database, searched later, exported as JSON, and—where enabled in the interface—deleted by the user.
+- Store screening history in a local SQLite database.
+- Revisit and search saved reports where supported.
+- Export structured report/history data as JSON where available.
+- Use the app's deletion controls, if enabled, to remove saved history.
 
-### 9. Downloadable results
+### 📥 Report Exports
 
-Depending on the selected feature, the app supports downloads such as:
+| Format | Intended use |
+|---|---|
+| CSV | Candidate comparison and spreadsheet analysis |
+| JSON | Structured screening reports or history export |
+| TXT | Plain-text interview practice or roadmap content |
 
-- **CSV:** candidate comparison table;
-- **JSON:** structured screening report or history export;
-- **TXT:** interview-practice or learning-roadmap content.
+Available fields and download controls depend on the current application implementation.
 
 ---
 
-## 🔄 Application Workflow
+## 🏗️ System Architecture
 
 ```mermaid
 flowchart TD
-    A([Start CareerPilot AI]) --> B[Open Streamlit dashboard]
-    B --> C[Enter target job description]
-    C --> D[Upload one or more PDF resumes]
-    D --> E[Extract text from each PDF]
-    E --> F[Detect skills from resume and job text]
-    F --> G[Calculate skill coverage]
-    F --> H[Calculate TF-IDF text similarity]
-    G --> I[Combine components into screening score]
+    A([User]) --> B[Streamlit Dashboard]
+    B --> C[Upload PDF Resume and Enter Job Description]
+    C --> D[PDF Text Extraction]
+    D --> E[Skill Detection]
+    D --> F[TF-IDF Text Similarity]
+    E --> G[Skill Coverage]
+    F --> H[Cosine Similarity Score]
+    G --> I[Weighted Screening Score]
     H --> I
-    I --> J[Show results and candidate comparison]
+    I --> J[Results and Candidate Comparison]
     J --> K{Groq API configured?}
-    K -- Yes --> L[Request optional AI assessment]
-    K -- No --> M[Continue with local matching results]
-    L --> N[Review coaching, gaps, and next steps]
+    K -- Yes --> L[Optional AI Resume Coach]
+    K -- No --> M[Local Analysis Results]
+    L --> N[Review Gaps and Next Steps]
     M --> N
-    N --> O[Export report and/or save local history]
-    O --> P([Finish])
+    N --> O[Reports and Local SQLite History]
+    O --> P([User Reviews or Exports Results])
 ```
 
-### Workflow explained
+### 🔍 How It Works
 
-1. **Provide the role:** paste the job description the resume should be compared with.
-2. **Upload resumes:** select one or multiple PDF files.
-3. **Extract text:** the app reads selectable text from the PDF. Image-only scans are not supported unless OCR is added.
-4. **Detect skills:** the app checks extracted text against its built-in skill vocabulary.
-5. **Calculate scores:** skill coverage and TF-IDF similarity are combined into a screening score.
-6. **Review results:** inspect the score, matching skills, detected gaps, and—when batch screening is used—candidate comparisons.
-7. **Use optional AI:** if configured, request additional coaching and recommendations.
-8. **Save or export:** use available download controls and local report history.
+1. **User input:** provide a job description and upload one or more PDF resumes.
+2. **Text extraction:** the PDF parser extracts selectable text from each resume.
+3. **Skill detection:** the analyzer searches for skills included in its built-in vocabulary.
+4. **Text similarity:** TF-IDF vectors and cosine similarity estimate textual overlap between the resume and job description.
+5. **Score calculation:** skill coverage and text similarity are combined using the documented weighting.
+6. **Results display:** the dashboard presents scores, detected skills, gaps, and batch comparisons where relevant.
+7. **Optional AI assessment:** if configured, Groq can provide additional coaching.
+8. **History and export:** reports can be stored locally and exported through available controls.
+
+The precise sequence and available controls depend on the version of the application being run.
 
 ---
 
-## 🧮 Scoring Methodology
+## 🧮 Screening Score Methodology
 
-CareerPilot AI uses the following explainable heuristic:
+CareerPilot AI uses this explainable heuristic:
 
-**Screening score = 70% × detected skill coverage + 30% × TF-IDF text similarity**
+**Screening Score = (70% × Skill Coverage) + (30% × Text Similarity)**
 
-| Component | Weight | What it measures |
+| Component | Weight | Explanation |
 |---|---:|---|
-| Detected skill coverage | 70% | The proportion of recognised job-description skills that are also detected in the resume |
-| TF-IDF text similarity | 30% | Wording overlap between the resume text and job description, calculated using TF-IDF vectors and cosine similarity |
-| Final screening score | 100% | The weighted combination of the two components |
+| Detected skill coverage | 70% | The percentage of recognised job-description skills also detected in the resume |
+| TF-IDF text similarity | 30% | Textual overlap estimated using TF-IDF vectors and cosine similarity |
+| Final screening score | 100% | Weighted combination of the two components |
 
-### Important interpretation notes
+### How to interpret the score
 
-- **Skill coverage** depends on the built-in vocabulary and the quality of extracted text.
-- **Text similarity** measures textual overlap, not a candidate's full ability or potential.
+- Skill coverage depends on the built-in skill vocabulary and the quality of extracted text.
+- Text similarity measures wording overlap, not complete semantic understanding or real-world ability.
+- Synonyms, context, formatting, and relevant experience may be missed.
 - A low score does not automatically mean a candidate is unsuitable.
-- A skill not detected by the app may still be present under a synonym, in a project description, or in a format the parser missed.
-- The score is a review aid—not a probability of getting hired and not a prediction of future job performance.
-- Always review the original resume and use consistent, job-related criteria.
+- The result is **not** a probability of getting hired or a prediction of job performance.
+
+Use the score to organise review, then check the original resume and apply consistent, job-related criteria.
 
 ---
 
-## 🤖 AI Automation and Intelligence
+## ⚙️ AI and Automation Pipeline
 
-CareerPilot AI combines deterministic local processing with optional external AI assistance.
-
-| Stage | Processing | Output |
+| Stage | Technology / method | Result |
 |---|---|---|
-| PDF input | PDF text extraction | Resume text available for analysis |
-| Skill detection | Built-in skill vocabulary matching | Detected resume/job skills |
-| Coverage calculation | Compare detected job skills with resume skills | Skill coverage and visible gaps |
-| Text comparison | TF-IDF vectorisation and cosine similarity | Text similarity score |
-| Score calculation | Weighted formula | Explainable screening score |
-| Optional AI assessment | Groq API, when configured | Additional feedback and coaching |
-| Report history | Local SQLite database | Saved reports for later review |
-| Export | Download generation in the app | CSV, JSON, or TXT files where supported |
+| PDF parsing | PDF text extraction | Resume text for analysis |
+| Skill recognition | Built-in vocabulary matching | Recognised resume and job skills |
+| Skill-gap calculation | Comparison of recognised skills | Matches and potential gaps |
+| Text similarity | TF-IDF and cosine similarity | Similarity score |
+| Score aggregation | Weighted formula | Explainable screening score |
+| Optional AI coaching | Groq API | Additional feedback and suggestions |
+| Local persistence | SQLite | Saved screening history |
+| Downloads | CSV / JSON / TXT features | Portable reports where supported |
 
 ### What is automated?
 
-- extracting selectable text from uploaded PDFs;
-- detecting recognised skills;
-- calculating similarity and weighted scores;
-- comparing multiple resumes against a job description;
-- presenting result summaries and comparisons;
-- generating optional AI feedback;
-- saving and exporting screening reports.
+- extracting selectable text from PDF files;
+- identifying recognised skill keywords;
+- calculating skill coverage and text similarity;
+- combining score components;
+- comparing multiple resumes against one role;
+- requesting optional AI feedback;
+- saving or exporting supported reports.
 
-### What is not guaranteed to be automated?
+### What is not automatically verified?
 
-- verifying whether a candidate truly possesses a skill;
-- validating a qualification or employment history;
-- checking whether a job posting is current or authentic;
-- verifying that a suggested course, resource, or project is the best available option;
-- making a fair or final hiring decision.
+- whether a candidate truly has a skill;
+- the accuracy of qualifications or work history;
+- whether a job advertisement is authentic or current;
+- the quality or accreditation of a suggested course;
+- whether a person should be hired.
 
-**Note on animations:** Streamlit reruns the app as users interact with widgets and can display charts, metrics, tables, and other interactive elements. This README does not claim custom animations or transitions unless they are implemented in the source code.
+**Animation note:** the banner at the top uses an externally hosted animated image. The Streamlit app may use interactive charts and widgets; custom in-app animations should only be claimed if they are implemented in the source code.
 
 ---
 
-## 📊 Dashboard and User Interface
-
-The app is organised around its available dashboard sections and tools:
+## 🖥️ Dashboard Sections
 
 | Section / Tool | Purpose |
 |---|---|
-| Dashboard | Review headline metrics, recent scores, job profiles, and latest reports |
-| Batch screening | Compare multiple resumes against one job description |
-| Skill-gap analysis | Inspect recognised matching skills and detected gaps |
-| Resume Coach | Review strengths, improvement suggestions, keywords, project ideas, and a suggested summary |
-| Interview Prep | Practise role-related questions and draft answers |
-| Learning Roadmap | Review suggested next steps for detected gaps |
-| Past Reports | Search and revisit locally stored screening history |
-| Export controls | Download supported results in useful formats |
+| Dashboard | Review available screening metrics, recent scores, and latest reports |
+| Resume screening | Analyse one resume against a job description |
+| Batch screening | Compare multiple resumes against the same role |
+| Skill-gap analysis | Inspect detected matches and missing recognised keywords |
+| Resume Coach | Review AI-assisted strengths and improvement ideas |
+| Interview Prep | Practise role-specific questions |
+| Learning Roadmap | Review suggested next learning steps |
+| Past Reports | Revisit locally saved screening history |
+| Export controls | Download supported reports |
 
-The exact labels, layout, charts, and controls depend on the version of `app.py` in the repository. This documentation describes the intended functionality and does not assume that unverified animations or UI components exist.
+The exact navigation labels and visual layout depend on the `app.py` version in the repository.
 
 ---
 
-## 🗂️ Project Structure
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Main programming language |
+| Streamlit | Dashboard and user interface |
+| PDF parsing dependency | Extracts text from PDF resumes |
+| scikit-learn, if included in the current code | TF-IDF vectorisation and cosine similarity |
+| SQLite | Local screening-history database |
+| Groq API | Optional AI-powered assessment and coaching |
+| Git & GitHub | Version control and repository hosting |
+
+The authoritative dependency list is `requirements.txt`. The app's exact imports determine which libraries are required.
+
+---
+
+## 📂 Project Structure
 
 ```text
 CareerPilot-AI/
-├── app.py                  # Streamlit dashboard and application flow
-├── analyzer.py             # Resume/job analysis, skill matching, and scoring logic
-├── resume_parser.py        # PDF text extraction helpers
-├── requirements.txt        # Python package dependencies
-├── .env.example            # Example environment-variable configuration
-├── .gitignore              # Excludes secrets, virtual environments, and local data
-├── README.md               # Project documentation
-├── .env                    # Local secrets; do not commit (created locally)
-├── .venv/                  # Local Python virtual environment; do not commit
-└── careerpilot_history.db  # Local SQLite history; generated/used at runtime
+│
+├── app.py                    # Streamlit dashboard and application flow
+├── analyzer.py               # Skill detection, comparison, and scoring logic
+├── resume_parser.py          # PDF text extraction helpers
+├── requirements.txt          # Python package dependencies
+├── .env.example              # Environment-variable template
+├── .gitignore                # Excludes secrets and local runtime files
+├── README.md                 # Project documentation
+│
+├── .env                      # Local API key configuration (do not commit)
+├── .venv/                    # Local Python virtual environment (do not commit)
+└── careerpilot_history.db    # Local SQLite history (runtime data; do not commit)
 ```
 
-> `.env`, `.venv/`, and `careerpilot_history.db` are local runtime files. They should remain excluded from Git. The database may appear after running the application.
+The `.env`, `.venv/`, and `careerpilot_history.db` entries are local/runtime files and should be ignored by Git. The database may be created when the application runs.
 
-### Main files
+### Main files explained
 
-| File | Responsibility |
-|---|---|
-| `app.py` | Streamlit pages, widgets, dashboard presentation, user interactions, and report actions |
-| `analyzer.py` | Skill detection, text similarity, score calculation, and analysis helpers |
-| `resume_parser.py` | Reads text from supported PDF resumes |
-| `requirements.txt` | Lists the Python libraries required to run the project |
-| `.env.example` | Documents the names of optional environment variables without storing real secrets |
-| `.gitignore` | Prevents local secrets, virtual environments, caches, and database files from being committed |
-| `careerpilot_history.db` | SQLite database for local screening history |
+- **`app.py`** — builds the Streamlit interface, handles user interactions, and presents results and available tools.
+- **`analyzer.py`** — contains resume/job analysis helpers, recognised skill matching, and scoring logic.
+- **`resume_parser.py`** — extracts text from supported PDF resumes.
+- **`requirements.txt`** — lists the Python dependencies installed for the project.
+- **`.env.example`** — documents environment-variable names without exposing real credentials.
+- **`.gitignore`** — prevents secrets, virtual environments, cache files, and local database files from being committed.
+- **`careerpilot_history.db`** — stores local screening history when the application uses its SQLite persistence.
 
 ---
 
-## 🧰 Technology Stack
+## 🚀 Getting Started
 
-| Technology | Role in the project |
-|---|---|
-| Python | Core programming language |
-| Streamlit | Interactive dashboard and web interface |
-| PDF parsing library listed in `requirements.txt` | Extracts text from PDF resumes |
-| scikit-learn | TF-IDF vectorisation and cosine similarity, if used by the current analyzer implementation |
-| SQLite | Local screening-history storage |
-| Groq API | Optional AI-powered assessment and coaching |
-| pandas / Python data tools | Tabular comparisons and exports, if included in the current implementation |
-| Git and GitHub | Source control and project hosting |
+### 1. Prerequisites
 
-The exact dependencies are defined by `requirements.txt`. If a library is not listed there or imported by the code, do not assume it is required.
+- Windows, Linux, or macOS;
+- Python version compatible with the packages in `requirements.txt`;
+- Git, if cloning from GitHub;
+- internet access for package installation;
+- an optional Groq API key for AI coaching.
 
----
+### 2. Clone the Repository
 
-## 🪟 Installation on Windows
-
-### Prerequisites
-
-- Windows 10 or Windows 11;
-- Python 3.10+ recommended (use a version compatible with the project's dependencies);
-- Git, if you plan to clone the repository;
-- an internet connection for installing packages;
-- an optional Groq API key for AI features.
-
-### Option A — Clone from GitHub
-
-```powershell
+```bash
 git clone https://github.com/ashfaque-ahmed78/CareerPilot-AI.git
 cd CareerPilot-AI
 ```
 
-### Option B — Open your existing project folder
+If you already have the project folder, open a terminal in the folder containing `app.py` and `requirements.txt`.
 
-Open PowerShell in the folder that contains `app.py`, `analyzer.py`, and `requirements.txt`.
+### 3. Create a Virtual Environment
 
-### Create and activate a virtual environment
+**Windows PowerShell:**
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-If PowerShell blocks activation, you can use the environment's Python directly:
+**Linux / macOS:**
 
-```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-If activation works, continue with:
+### 4. Install Dependencies
 
-```powershell
+```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### Configure environment variables
+On Windows, if activation is blocked or you want to use the virtual environment directly:
 
-Create a local `.env` file from the example if your project uses this setup:
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+### 5. Configure Environment Variables
+
+If the project uses `.env` for local configuration, create it from the example:
 
 ```powershell
 Copy-Item .env.example .env
 notepad .env
 ```
 
-Add your real key only to the local `.env` file:
+If `.env` already exists, edit it instead of overwriting it.
+
+Example configuration:
 
 ```env
-GROQ_API_KEY=your_actual_key_here
+GROQ_API_KEY=your_actual_groq_key
 GROQ_MODEL=openai/gpt-oss-120b
 ```
 
-Replace the example key with your own key. Never paste a real key into the README, source code, screenshots, public issues, or GitHub commits.
+Use the model name supported by your account and the application's current implementation. Add only variables actually required by your code.
 
-> If `.env` already exists, do not overwrite it with `Copy-Item`. Edit the existing file instead. The application must also load environment variables from `.env` (for example, via `python-dotenv`) for this method to work; check the current code and dependencies if the key is not detected.
+**Security:** never commit `.env`, API keys, private resumes, or screening-history databases to GitHub.
 
----
-
-## ▶️ Running the Application
-
-From the project directory, with the virtual environment activated:
+### 6. Run CareerPilot AI
 
 ```powershell
 python -m streamlit run app.py
 ```
 
-Or run Streamlit through the virtual environment directly:
+Or run Streamlit using the virtual environment directly:
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-Streamlit normally prints a local URL such as `http://localhost:8501`. Open the URL shown in your terminal.
+Open the local URL printed in the terminal, commonly:
 
-To stop the local server, focus the PowerShell terminal and press **Ctrl + C**.
+```text
+http://localhost:8501
+```
+
+To stop the server, return to the terminal and press **Ctrl + C**.
 
 ---
 
-## 🧭 How to Use CareerPilot AI
+## 🧭 How to Use the Application
 
-1. **Start the app** using the command above.
-2. **Choose the relevant dashboard tool** from the current interface.
-3. **Paste the target job description** into the job-description field.
-4. **Upload a text-based PDF resume** (or multiple PDFs for batch screening).
-5. **Run the analysis** using the app's available action button.
-6. **Review the screening score** and its underlying components.
-7. **Inspect matched skills and detected gaps**; compare these with the original resume.
-8. **Optionally review AI feedback** if the Groq API key is configured.
-9. **Use interview practice and roadmap suggestions** to plan preparation.
-10. **Export or revisit the report** using the controls available in the current version.
+1. Launch CareerPilot AI.
+2. Open the relevant screening tool in the dashboard.
+3. Paste the target job description.
+4. Upload one text-based PDF resume or several resumes for batch comparison.
+5. Run the analysis using the available interface control.
+6. Review the screening score and its components.
+7. Inspect detected matches and potential skill gaps.
+8. If configured, review the optional AI Coach suggestions.
+9. Use interview practice and roadmap recommendations as preparation aids.
+10. Export or revisit the report using the available controls.
 
 ### Tips for better results
 
-- Use a clear, text-based PDF rather than a scanned image.
-- Include a complete, role-specific job description.
-- Keep resume content readable and organised.
-- Review every detected skill against the source document.
-- Treat generated summaries and recommendations as drafts to edit, not facts to copy blindly.
+- Prefer PDFs with selectable text rather than scanned images.
+- Provide a complete and role-specific job description.
+- Check detected skills against the source resume.
+- Review the original resume instead of judging by score alone.
+- Edit AI-generated text before using it in a real application.
 
 ---
 
-## 📁 Reports, Exports, and Local History
+## 📁 Reports and Local Data
 
-### Local history
+### SQLite screening history
 
-The app stores screening history in `careerpilot_history.db`, a local SQLite database. This is convenient for a single-user prototype, but it is not a secure, shared production database.
+Screening history is stored locally in `careerpilot_history.db`. This is useful for a single-user prototype, but it is not a secure multi-user database.
 
 ### Export formats
 
-| Format | Typical use |
+| Format | Common purpose |
 |---|---|
-| CSV | Compare candidates or open results in spreadsheet software |
-| JSON | Preserve structured report data or export history |
-| TXT | Save interview questions, roadmap notes, or plain-text content |
+| CSV | Review candidate comparison data in spreadsheet software |
+| JSON | Keep structured report or history data |
+| TXT | Save plain-text interview or roadmap content |
 
-The exact fields and export options depend on the selected screen and the current implementation.
+The exact fields and available exports depend on the current implementation.
 
-### Backup and cleanup
+### Data cleanup
 
-- Back up the database only if you need to preserve local history.
-- Do not upload resumes or reports containing personal information to a public repository.
-- Use the app's history-deletion controls, if present, when you want to remove stored reports.
-- Deleting a report from the app does not delete copies already downloaded or backed up elsewhere.
-
----
-
-## 🔐 Privacy and Responsible Use
-
-- **API key:** keep `GROQ_API_KEY` in a local environment file or deployment secret manager.
-- **GitHub:** never commit `.env`, API keys, private resumes, or screening-history databases.
-- **External AI:** when AI assessment is enabled, relevant text may be sent to the configured Groq service. Do not submit data unless you have permission and understand the service's applicable data handling terms.
-- **Candidate privacy:** obtain permission before processing another person's resume and follow applicable privacy and employment rules.
-- **Human review:** do not use the score as the sole basis for rejecting, ranking, or hiring a person.
-- **Fairness:** skill vocabularies and text-similarity systems can miss relevant experience, synonyms, non-traditional career paths, and context.
-- **Data minimisation:** only upload information needed for the task, and remove local reports when they are no longer needed.
+- Keep a backup only if you need to preserve local history.
+- Do not publish reports containing personal information.
+- Use the app's history controls, if present, to delete saved records.
+- Deleting local history does not delete copies already exported elsewhere.
 
 ---
 
-## ⚠️ Current Limitations
+## 🔐 Security, Privacy & Responsible Use
 
-- OCR for scanned or image-only PDFs is not included.
-- The built-in skill vocabulary is limited and may miss synonyms or specialised skills.
-- TF-IDF similarity measures text overlap, not meaning or real-world competence.
-- AI-generated feedback can be incorrect, incomplete, or overly confident.
-- Recommendations should be independently reviewed; the app does not guarantee that learning resources are current or accredited.
-- Local SQLite history is intended for a single-user prototype, not a secure multi-user deployment.
-- Network access is required for optional Groq AI calls and initial dependency installation.
-- This README does not claim custom animations, external job-market verification, multi-user authentication, or progress synchronisation unless those features are confirmed in the current code.
+- Store `GROQ_API_KEY` in a local environment file or deployment secret manager.
+- Keep `.env`, private resumes, and `careerpilot_history.db` out of GitHub.
+- When AI coaching is enabled, relevant text may be sent to Groq. Only submit candidate data when you have permission and understand the service's applicable data-handling terms.
+- Obtain permission before processing another person's resume.
+- Do not use the screening score as the sole basis for rejecting, ranking, or hiring candidates.
+- Skill matching may miss synonyms, context, and non-traditional experience.
+- Minimise the amount of personal data processed and delete local reports when no longer needed.
+- Before deploying to multiple users, add appropriate authentication, access controls, and secure data handling.
 
 ---
 
-## 🛠️ Troubleshooting
+## 🧪 Testing & Debugging
 
-### `No module named streamlit`
+Test the application in separate layers:
 
-Install dependencies using the same Python environment used to start the app:
+1. **PDF parsing:** verify that a text-based PDF produces readable text.
+2. **Skill detection:** check recognised skills against the source resume and job description.
+3. **Score calculation:** verify the displayed score and component percentages.
+4. **Batch screening:** test more than one resume and review the comparison table.
+5. **AI integration:** check the optional Groq configuration and handle API errors.
+6. **History and exports:** confirm that reports save and downloads contain the expected data.
+
+### Common issues
+
+**`No module named streamlit`**
 
 ```powershell
 python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-If you have a virtual environment, confirm it is activated or use:
+If using a virtual environment:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-### `Cannot connect to CareerPilot API`
+**Groq AI does not respond**
 
-If the interface expects a separate backend service, start that backend in its own terminal and check the API URL configured in the app. If your current version is a Streamlit-only app, it may not require a separate backend; follow the code version you are running.
+- Confirm that `GROQ_API_KEY` is set correctly.
+- Verify the application loads `.env` if you rely on that file.
+- Confirm the API key and model are valid for your account.
+- Restart the app after changing configuration.
+- Check the terminal for API errors. Local analysis may still work if the current implementation supports fallback mode.
 
-### Groq AI features do not work
+**The resume produces no text**
 
-- Confirm the key is named `GROQ_API_KEY`.
-- Check that the local `.env` is in the directory expected by the application.
-- Verify that the code loads `.env` values and that `python-dotenv` is installed if needed.
-- Confirm the API key is valid and the configured model is available to your account.
-- Restart Streamlit after changing environment variables.
-- Local skill matching should still be available when optional AI is not configured, provided the current code supports the documented fallback.
+The PDF may be scanned or image-only. OCR is not included in this prototype.
 
-### PowerShell cannot activate `.venv`
-
-Use the environment's Python executable directly:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m streamlit run app.py
-```
-
-### Resume text is empty or incomplete
-
-Check whether the PDF contains selectable text. Scanned pages may require OCR, which is not included in the current prototype.
-
-### Git tries to include `.env` or the database
-
-Check `.gitignore` and the staged files before committing:
+**Git shows `.env` or the database as staged**
 
 ```powershell
 git status
 git check-ignore -v .env careerpilot_history.db
 ```
 
-If a secret has already been committed or pushed, removing it in a later commit is not enough: revoke/rotate the exposed key and clean the Git history before sharing the repository further.
+If an API key has already been pushed publicly, revoke or rotate it immediately. Deleting it in a later commit alone does not remove it from Git history.
 
 ---
 
-## 🗺️ Future Improvements
+## ⚠️ Current Limitations
 
-Potential next steps for the project include:
-
-- expand and maintain the skill vocabulary, including synonyms;
-- add OCR support for scanned resumes;
-- provide clearer evidence snippets showing where a skill was detected;
-- add configurable role profiles and compare a resume with 3–5 career paths;
-- connect learning recommendations to verified, up-to-date resources;
-- add user-defined milestones and progress tracking;
-- improve accessibility, mobile layout, and user feedback;
-- add tests for PDF parsing, score calculation, and export functions;
-- add authentication, access controls, and secure storage before any multi-user deployment;
-- document and validate any animation or transition effects added to the UI.
-
-These are proposed improvements, not claims that they are already implemented.
+- Scanned/image-only PDFs need OCR, which is not included.
+- The skill vocabulary is a starter list and may miss synonyms or specialised terminology.
+- TF-IDF measures text overlap rather than full semantic meaning.
+- AI feedback may be inaccurate or incomplete.
+- Recommendations are not guaranteed to be current, accredited, or suitable for every user.
+- Local SQLite history is intended for a local prototype, not secure multi-user production.
+- Custom in-app animations, verified live job-market data, authentication, and synchronised progress should not be assumed unless implemented in the current source code.
 
 ---
 
-## 🤝 Contributing
+## 🔮 Future Improvements
 
-Contributions are welcome. A useful contribution workflow is:
+Potential future development directions include:
 
-1. Fork the repository.
-2. Create a feature branch.
-3. Make a focused change.
-4. Test the affected workflow locally.
-5. Update the documentation if behaviour changes.
-6. Open a pull request describing the change and how it was tested.
+- expand skill coverage and synonym handling;
+- add OCR for scanned resumes;
+- show evidence snippets for detected skills;
+- compare profiles with 3–5 career roles or job descriptions;
+- connect learning suggestions to verified resources;
+- add milestones and progress tracking;
+- improve accessibility and mobile responsiveness;
+- add automated tests for parsing, scoring, and exports;
+- introduce authentication and secure multi-user storage for a production version;
+- add and test UI animations where useful.
 
-Please do not include real API keys, private resumes, personal candidate data, or local database files in commits.
+These are proposed improvements, not claims that every feature is already implemented.
 
 ---
 
-## 📄 License
+## 🧠 Engineering Principles
 
-No license has been specified yet. Unless a license file is added, reuse, modification, and redistribution are not automatically granted. Add a `LICENSE` file if you want to publish the project under an open-source license.
+CareerPilot AI demonstrates several practical software-engineering concepts:
+
+- modular separation of interface, analysis, and PDF parsing;
+- explainable scoring rather than a single opaque AI judgement;
+- optional AI integration alongside local analysis;
+- environment-based secret configuration;
+- structured data storage and downloadable reports;
+- iterative testing and responsible handling of candidate information.
+
+---
+
+## 👨‍💻 About the Developer
+
+<p align="center">
+  <b>Ashfaque Ahmed</b><br/>
+  Software Engineering Student | AI & Software Development
+</p>
+
+<p align="center">
+  <a href="https://github.com/ashfaque-ahmed78">
+    <img src="https://img.shields.io/badge/GitHub-ashfaque--ahmed78-181717?style=for-the-badge&logo=github" alt="GitHub profile"/>
+  </a>
+  <a href="https://github.com/ashfaque-ahmed78/CareerPilot-AI">
+    <img src="https://img.shields.io/badge/Project-CareerPilot%20AI-4338CA?style=for-the-badge" alt="CareerPilot AI repository"/>
+  </a>
+</p>
+
+---
+
+<p align="center">
+  <b>Navigate your career with clearer insights, practical feedback, and informed next steps.</b>
+</p>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,50:4338CA,100:06B6D4&height=110&section=footer" width="100%" alt="CareerPilot AI footer banner"/>
+</p>
