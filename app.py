@@ -1,5 +1,4 @@
-"""CareerPilot AI Resume Screener - hackathon-friendly dashboard edition.
-
+"""CareerPilot AI Resume Screener - dashboard edition.
 All scores are transparent heuristic decision-support signals, not hiring probabilities.
 """
 import csv
@@ -10,10 +9,9 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-import streamlit as st
 import pandas as pd
+import streamlit as st
 from dotenv import load_dotenv
-
 from analyzer import (
     analyze_with_ai,
     build_local_analysis,
@@ -23,7 +21,12 @@ from analyzer import (
 from resume_parser import clean_text, extract_text_from_pdf
 
 load_dotenv()
-st.set_page_config(page_title="CareerPilot AI | Resume Intelligence", page_icon="🧭", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(
+    page_title="CareerPilot AI | Resume Intelligence",
+    page_icon="🧭",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "careerpilot_history.db"
@@ -45,24 +48,8 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 .metric-value { color:#152443; font-family:'Manrope',sans-serif; font-size:1.8rem; font-weight:800; margin:.15rem 0; }
 .metric-note { color:#64748b; font-size:.78rem; }
 .pill { display:inline-block; padding:.25rem .6rem; border-radius:999px; background:#e9f9f0; color:#087443; font-size:.78rem; font-weight:700; }
-
-div[data-testid="stMetric"] {
-    background: #ffffff;
-    color: #152443;
-    border: 1px solid #e4eaf4;
-    padding: 1rem;
-    border-radius: 15px;
-    box-shadow: 0 3px 12px rgba(30,50,90,.025);
-}
-
-div[data-testid="stMetric"] label,
-div[data-testid="stMetric"] [data-testid="stMetricLabel"],
-div[data-testid="stMetric"] [data-testid="stMetricValue"],
-div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
-    color: #152443 !important;
-    -webkit-text-fill-color: #152443 !important;
-}
-
+div[data-testid="stMetric"] { background:#fff; color:#152443; border:1px solid #e4eaf4; padding:1rem; border-radius:15px; box-shadow:0 3px 12px rgba(30,50,90,.025); }
+div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricLabel"], div[data-testid="stMetric"] [data-testid="stMetricValue"], div[data-testid="stMetric"] [data-testid="stMetricDelta"] { color:#152443 !important; -webkit-text-fill-color:#152443 !important; }
 </style>
 <div class="hero"><div class="eyebrow">Career intelligence workspace</div><h1>🧭 CareerPilot AI</h1><p>Resume screening, explainable skill matching, candidate insights, and practical career growth plans.</p></div>
 """, unsafe_allow_html=True)
@@ -134,7 +121,7 @@ def result_from_row(row):
         "matching_skills": parse_json_list(row["matched_skills"]), "missing_skills": parse_json_list(row["missing_skills"]),
         "resume_skills": parse_json_list(row["resume_skills"]), "job_skills": parse_json_list(row["job_skills"]),
         "explanation": row["explanation"], "recommendations": row["recommendations"], "resume_text": row["resume_text"],
-        "job_description": row["job_description"], "ai_powered": bool(row["ai_powered"])
+        "job_description": row["job_description"], "ai_powered": bool(row["ai_powered"]),
     }
 
 
@@ -165,9 +152,11 @@ def make_interview_questions(record):
 def make_roadmap(record):
     gaps = record.get("missing_skills", [])
     if not gaps:
-        return [("Polish", "Review the job description and make sure every listed skill is backed by a real example."),
-                ("Prove", "Add project links, a clear README, and measurable outcomes where you can verify them."),
-                ("Practice", "Prepare short STAR-style stories for your strongest relevant projects.")]
+        return [
+            ("Polish", "Review the job description and make sure every listed skill is backed by a real example."),
+            ("Prove", "Add project links, a clear README, and measurable outcomes where you can verify them."),
+            ("Practice", "Prepare short STAR-style stories for your strongest relevant projects."),
+        ]
     roadmap = []
     for index, skill in enumerate(gaps[:5], start=1):
         roadmap.append((f"Week {index}: {skill}", f"Learn the fundamentals of {skill}, complete one small practical exercise, and document what you built. Only add it to your resume after you have real experience with it."))
@@ -175,15 +164,24 @@ def make_roadmap(record):
     return roadmap
 
 
+# FIX: use a callback to change radio state before Streamlit re-runs the script.
+def go_to_screening():
+    st.session_state["navigation"] = "New Screening"
+
+
 init_db()
 history = get_history()
-
 with st.sidebar:
     st.markdown("## ✦ CareerPilot AI")
     st.caption("Your career, smarter")
     if "navigation" not in st.session_state:
         st.session_state["navigation"] = "Dashboard"
-    page = st.radio("Navigation", ["Dashboard", "New Screening", "Past Reports", "Resume Coach", "Interview Prep", "Learning Roadmap", "About & Scoring"], key="navigation", label_visibility="collapsed")
+    page = st.radio(
+        "Navigation",
+        ["Dashboard", "New Screening", "Past Reports", "Resume Coach", "Interview Prep", "Learning Roadmap", "About & Scoring"],
+        key="navigation",
+        label_visibility="collapsed",
+    )
     st.divider()
     st.markdown("**Hackathon highlights**")
     st.markdown("- Multi-resume screening\n- Explainable percentage score\n- Persistent screening history\n- Skill-gap roadmap\n- Downloadable reports")
@@ -220,9 +218,7 @@ if page == "Dashboard":
     with right:
         st.markdown("### 🧭 Quick actions")
         st.write("**New screening** — compare one or several resumes against a role.")
-        if st.button("➕ Start a screening", type="primary", use_container_width=True):
-            st.session_state["navigation"] = "New Screening"
-            st.rerun()
+        st.button("➕ Start a screening", type="primary", use_container_width=True, on_click=go_to_screening)
         st.write("**Candidate review** — inspect missing skills, AI feedback, and export reports.")
         if history:
             best = max(history, key=lambda x: float(x["screening_score"]))
@@ -384,14 +380,17 @@ elif page == "Resume Coach":
             left, right = st.columns(2)
             with left:
                 st.markdown("### 💪 Strengths")
-                for item in suggestions.get("strengths", []): st.success(item)
+                for item in suggestions.get("strengths", []):
+                    st.success(item)
                 st.markdown("### 🎯 Improvements")
-                for item in suggestions.get("improvements", []): st.warning(item)
+                for item in suggestions.get("improvements", []):
+                    st.warning(item)
             with right:
                 st.markdown("### 🔑 Keywords to consider")
                 st.write(", ".join(suggestions.get("keyword_suggestions", [])) or "No keyword suggestions returned.")
                 st.markdown("### 🚀 Project ideas")
-                for item in suggestions.get("project_suggestions", []): st.write("• " + item)
+                for item in suggestions.get("project_suggestions", []):
+                    st.write("• " + item)
             st.markdown("### 📝 Suggested professional summary")
             st.info(suggestions.get("summary_suggestion", "No summary suggestion returned."))
             st.caption("Only use claims that truthfully reflect your experience. Suggested projects are ideas, not completed work.")
@@ -429,11 +428,12 @@ elif page == "Learning Roadmap":
             st.markdown("**Detected skills to review**: " + ", ".join(selected["missing_skills"]))
         else:
             st.success("No gaps were detected by the current keyword list. Review the full job description for requirements the tool may not recognise.")
-        for title, detail in make_roadmap(selected):
+        roadmap = make_roadmap(selected)
+        for title, detail in roadmap:
             with st.container(border=True):
                 st.markdown(f"**{title}**")
                 st.write(detail)
-        st.download_button("Download learning roadmap", "\n\n".join(f"{title}\n{detail}" for title, detail in make_roadmap(selected)), file_name="career_learning_roadmap.txt", mime="text/plain")
+        st.download_button("Download learning roadmap", "\n\n".join(f"{title}\n{detail}" for title, detail in roadmap), file_name="career_learning_roadmap.txt", mime="text/plain")
 
 else:  # About & Scoring
     st.subheader("ℹ️ About CareerPilot AI")
