@@ -45,9 +45,24 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 .metric-value { color:#152443; font-family:'Manrope',sans-serif; font-size:1.8rem; font-weight:800; margin:.15rem 0; }
 .metric-note { color:#64748b; font-size:.78rem; }
 .pill { display:inline-block; padding:.25rem .6rem; border-radius:999px; background:#e9f9f0; color:#087443; font-size:.78rem; font-weight:700; }
-div[data-testid="stMetric"] { background:#fff; border:1px solid #e4eaf4; padding:1rem; border-radius:15px; box-shadow:0 3px 12px rgba(30,50,90,.025); }
-.stButton button { border-radius:10px; font-weight:650; }
-hr { border-color:#e6ebf4; }
+
+div[data-testid="stMetric"] {
+    background: #ffffff;
+    color: #152443;
+    border: 1px solid #e4eaf4;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(30,50,90,.025);
+}
+
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] [data-testid="stMetricLabel"],
+div[data-testid="stMetric"] [data-testid="stMetricValue"],
+div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+    color: #152443 !important;
+    -webkit-text-fill-color: #152443 !important;
+}
+
 </style>
 <div class="hero"><div class="eyebrow">Career intelligence workspace</div><h1>🧭 CareerPilot AI</h1><p>Resume screening, explainable skill matching, candidate insights, and practical career growth plans.</p></div>
 """, unsafe_allow_html=True)
